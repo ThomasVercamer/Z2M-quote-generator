@@ -3,8 +3,13 @@
 // IIFE to make sure our code remains bundled and does not
 // mess up some global variables
 (() => {
-    // ---------- Variables
+    // ---------- Variables and elements
     let quotes = [];
+    const quoteContainer = document.getElementById("quote-container");
+    const quoteText = document.getElementById("quote");
+    const quoteAuthor = document.getElementById("author");
+    const twitterBtn = document.getElementById("twitter");
+    const newQuoteBtn = document.getElementById("new-quote");
 
     // ---------- Functions
     async function getQuotes() {
@@ -22,17 +27,20 @@
     function getRandomQuote() {
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
         const randomIndex = Math.floor(Math.random() * Math.floor(quotes.length))
-        return quotes[randomIndex];
+        const randomQuote = quotes[randomIndex];
+        showNewQuote(randomQuote);
     }
 
     function showNewQuote(quote){
-        console.log("New");
-        console.log(quote);
+        quoteText.textContent = quote.text;
+        quoteAuthor.textContent = quote.author || "Unknown";
+
+        quote.text.length > 50
+            ? quoteText.classList.add("long-quote")
+            : quoteText.classList.remove("long-quote");
     }
 
-// Event Handlers & Initial function calls
-    getQuotes()
-        .then(() => getRandomQuote())
-        .then(quote => showNewQuote(quote))
-    ;
+    // ---------- Event Handlers
+    getQuotes().then(() => getRandomQuote()); // Initial call
+    newQuoteBtn.addEventListener("click", getRandomQuote);
 })()
