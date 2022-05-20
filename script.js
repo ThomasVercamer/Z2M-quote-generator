@@ -1,5 +1,3 @@
-// Quotes API documentation: https://type.fit/api/quotes
-
 // IIFE to make sure our code remains bundled and does not
 // mess up some global variables
 (() => {
@@ -13,6 +11,7 @@
 
     // ---------- Functions
     async function getQuotes() {
+        // https://type.fit/api/quotes
         const apiURL = "https://type.fit/api/quotes";
         try {
             if(quotes.length > 0) return false;
@@ -40,7 +39,16 @@
             : quoteText.classList.remove("long-quote");
     }
 
+    function tweetQuote(){
+        // https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/overview
+        const text = quoteText.textContent;
+        const author = quoteAuthor.textContent;
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${text} - ${author}`;
+        window.open(twitterUrl, "_blank");
+    }
+
     // ---------- Event Handlers
     getQuotes().then(() => getRandomQuote()); // Initial call
     newQuoteBtn.addEventListener("click", getRandomQuote);
+    twitterBtn.addEventListener("click", tweetQuote);
 })()
